@@ -6,3 +6,34 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+<div>
+    <ul id="notification">
+    </ul>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+<script>
+
+
+    $(function () {
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/NotificationsHub")
+            .build();
+
+        connection.on("Broadcast", function (message) {
+            $("#notification").append("<li>" + message + "</li>");
+        });
+
+        connection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+
+    });
+
+    
+
+</script>
