@@ -7,6 +7,11 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
+
+<input type="text" id="messageInput"/> <br />
+<input type="button" id="sendButton" value="Send Message"/>
+
+
 <div>
     <ul id="notification">
     </ul>
@@ -16,7 +21,6 @@
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 
 <script>
-
 
     $(function () {
 
@@ -34,6 +38,28 @@
 
     });
 
-    
+
+    $(function () {
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/NotificationsHub")
+            .build();
+
+        connection.start().then(function () {
+
+            document.getElementById("sendButton").onclick = function () {
+
+                var message = document.getElementById("messageInput").value;
+                connection.invoke("BroadcastFromClient", message)
+                    .catch(function (err) {
+
+                        return console.error(err.toString());
+                    });
+
+            }
+        });
+
+
+    });
 
 </script>
