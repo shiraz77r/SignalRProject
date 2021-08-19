@@ -11,6 +11,7 @@ namespace SignalRProject.Hubs
         public async Task BroadcastFromClient(string message) 
         {
             await Clients.All.SendAsync("Broadcast", message);
+
         }
     }
 }
